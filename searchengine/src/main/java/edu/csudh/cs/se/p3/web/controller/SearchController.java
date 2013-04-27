@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.common.collect.Lists;
 
 @Controller
-@RequestMapping(method=RequestMethod.GET)
+@RequestMapping(value="/search", method=RequestMethod.GET)
 public class SearchController {
 
     
