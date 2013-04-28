@@ -1,0 +1,7 @@
+create table page (id integer primary key auto_increment, 
+name varchar(32),
+url varchar(256),
+description varchar(1024)
+)
+
+drop table page;

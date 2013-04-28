@@ -14,13 +14,13 @@ import edu.csudh.cs.se.p3.domain.Page;
 import edu.csudh.cs.se.p3.services.UrlPageService;
 
 @Controller
-@RequestMapping(value="/search", method=RequestMethod.GET)
 public class SearchController {
 
     @Inject private UrlPageService urlPageService;
     
     @ResponseBody
-    public Collection<Page> search(@PathVariable String urlString){        
-        return urlPageService.findPages(urlString);
+    @RequestMapping(value="/search/{searchString}", method=RequestMethod.GET)
+    public Collection<Page> search(@PathVariable String searchString){        
+        return urlPageService.findPages(searchString);
     }
 }
