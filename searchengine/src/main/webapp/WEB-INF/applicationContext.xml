@@ -50,7 +50,7 @@
  
  <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" c:dataSource-ref="arunaDataSource"/>
   
- <bean id="entityManagerFactory" name="ssap"
+ <bean id="entityManagerFactory" name="aruna"
   class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
   <property name="packagesToScan" value="edu.csudh.cs.se.p3.domain" />
   <property name="dataSource" ref="arunaDataSource"/>
@@ -75,7 +75,7 @@
  <bean id="transactionManager" 
   class="org.springframework.orm.jpa.JpaTransactionManager">
   <property name="entityManagerFactory" ref="entityManagerFactory" />
-  <property name="dataSource" ref="ssapDataSource" />
+  <property name="dataSource" ref="arunaDataSource" />
  </bean>
 
  <tx:annotation-driven transaction-manager="transactionManager"/>                           

@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.google.common.base.Objects;
@@ -25,10 +24,9 @@ public class Page {
 	@Column(name="url")
 	private String url;
 	
-	@Column(name="parentId")
-	@ManyToOne(optional=true)
-	private Page parent;
-
+	@Column(name="description")
+	private String description;
+		
 	public Integer getPageId() {
 		return pageId;
 	}
@@ -52,13 +50,13 @@ public class Page {
 	public void setUrl(String url) {
 		this.url = url;
 	}
-
-	public Page getParent() {
-		return parent;
+	
+	public void setDescription(String s){
+	    description =s;
 	}
-
-	public void setParent(Page parent) {
-		this.parent = parent;
+	
+	public String getDescription(){
+	    return description;
 	}
 
 	@Override
@@ -67,7 +65,7 @@ public class Page {
 			.add("pageId", pageId)
 			.add("pageName", pageName)
 			.add("url", url)
-			.add("parent", parent)
+			.add("description", description)
 			.toString();
 	}
 	
