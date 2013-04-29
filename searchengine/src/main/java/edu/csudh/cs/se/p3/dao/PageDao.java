@@ -8,7 +8,7 @@ import edu.csudh.cs.se.p3.domain.Page;
 
 public interface PageDao extends CrudRepository<Page, Integer>{
 
-    Collection<Page> findByDescriptionLike(String s);
+    Collection<Page> findByDescriptionLikeOrderByRankDesc(String s);
     
-    Collection<Page> findByUrlLike(String s);
+    Collection<Page> findByUrlLikeOrderByRankDesc(String s);
 }

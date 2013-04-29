@@ -7,7 +7,12 @@
  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
  <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.2/jquery-ui.min.js"></script>
  <script>
+ function updateRank(pageId){
+	 url="http://localhost:8080/searchengine/updaterank/"+pageId;
+	 $.getJSON(url, function(data){});
+ }
  $(document).ready(function(){
+	 
    $("#sbutton").click(function(){
      $("#results").empty();
      url="http://localhost:8080/searchengine/search/" + $("#searchText").val();
@@ -15,7 +20,7 @@
      $.getJSON(url,function(data){
        var items = [];
 	   $.each(data, function() {
-	   	 	     items.push('<a href="' + this.url + '">' + this.description + '</a><br/>');
+	   	 	     items.push('<a href="' + this.url + '" onclick=updateRank("' + this.pageId + '") target="_new">' + this.description + '</a><br/>');
   		});
   	$('<ul/>', {
 	    'class': 'my-new-list',

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Maps;
 
 import edu.csudh.cs.se.p3.domain.Page;
 import edu.csudh.cs.se.p3.job.CrawlWeb;
@@ -39,6 +38,13 @@ public class SearchController {
     public Map<String, String> crawl(@PathVariable String url) throws IOException{
     	crawlWeb.doCrawl("http://www.csudh.edu");
     	return ImmutableMap.of("success", "true");
+    }
+    
+    @ResponseBody
+    @RequestMapping(value="/updaterank/{pagerank}")
+    public Map<String, String> updateRank(@PathVariable Integer pagerank){
+        urlPageService.updatePageRank(pagerank);
+        return ImmutableMap.of("success", "true");
     }
     
     @ExceptionHandler(IOException.class)

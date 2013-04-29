@@ -26,6 +26,9 @@ public class Page {
 	
 	@Column(name="description")
 	private String description;
+	
+	@Column(name="rank")
+	private Integer rank;
 		
 	public Integer getPageId() {
 		return pageId;
@@ -59,6 +62,14 @@ public class Page {
 	    return description;
 	}
 
+	public void setRank(int rank){
+	    this.rank = rank;
+	}
+	
+	public Integer getRank(){
+	    return rank;
+	}
+	
 	@Override
 	public String toString(){
 		return Objects.toStringHelper(this)

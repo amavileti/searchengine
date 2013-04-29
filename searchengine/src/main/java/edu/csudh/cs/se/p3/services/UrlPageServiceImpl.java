@@ -24,7 +24,7 @@ public class UrlPageServiceImpl implements UrlPageService {
     public Collection<Page> findPages(String url) {
         checkNotNull(url);
         LOG.info("Searching to description {}", url);
-        return pageDao.findByDescriptionLike("%"+url.toLowerCase()+"%");
+        return pageDao.findByDescriptionLikeOrderByRankDesc("%"+url.toLowerCase()+"%");
     }
     
     @Transactional
@@ -42,7 +42,7 @@ public class UrlPageServiceImpl implements UrlPageService {
 
     @Transactional(readOnly=true)
     public Page findPageByDescription(String s){
-        Collection<Page> pageCollection = pageDao.findByDescriptionLike("%"+s.toLowerCase()+"%");
+        Collection<Page> pageCollection = pageDao.findByDescriptionLikeOrderByRankDesc("%"+s.toLowerCase()+"%");
         if(pageCollection.size()>0){
             return pageCollection.iterator().next();
         }else{
@@ -52,7 +52,7 @@ public class UrlPageServiceImpl implements UrlPageService {
     
     @Transactional(readOnly=true)
     public Page findPageByUrl(String s){
-        Collection<Page> pageCollection = pageDao.findByUrlLike("%"+s.toLowerCase()+"%");
+        Collection<Page> pageCollection = pageDao.findByUrlLikeOrderByRankDesc("%"+s.toLowerCase()+"%");
         if(pageCollection.size()>0){
             return pageCollection.iterator().next();
         }else{
@@ -65,9 +65,16 @@ public class UrlPageServiceImpl implements UrlPageService {
         return pageDao.findOne(i);
     }
     
-    @Transactional
+    @Transactional(readOnly=false)
     public Page update(Page p){
         return pageDao.save(p);
+    }
+    
+    @Transactional(readOnly=false)
+    public void updatePageRank(Integer pageId){
+        Page page = findByPageId(pageId);
+        page.setRank(page.getRank()+1);
+        update(page);
     }
     
     private String getTransformedDescription(String s){

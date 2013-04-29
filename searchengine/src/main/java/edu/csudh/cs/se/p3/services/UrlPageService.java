@@ -17,4 +17,6 @@ public interface UrlPageService {
     Page findByPageId(Integer i);
     
     Page update(Page p);
+    
+    void updatePageRank(Integer pageId);
 }
