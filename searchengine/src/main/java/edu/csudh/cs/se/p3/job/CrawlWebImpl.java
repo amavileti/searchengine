@@ -21,11 +21,13 @@ import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.client.HttpClientErrorException;
 
 import com.google.common.collect.Queues;
 import com.google.common.collect.Sets;
 import com.google.common.io.ByteStreams;
 
+import edu.csudh.cs.se.p2.service.IndexSearcher;
 import edu.csudh.cs.se.p3.services.UrlPageService;
 
 @Named
@@ -57,8 +59,13 @@ public class CrawlWebImpl implements CrawlWeb {
         while (!content.isEmpty() || scannedPages.size() < 1000) {
             String v = content.remove();
             LOG.info("Scanning {}", v);
-
-            String input = getUrlContent(v);
+            String input = EMPTY;
+            try{
+                input = getUrlContent(v);
+            }catch(Throwable e){
+                LOG.error("Unable to index {}", url);
+                continue;
+            }
 
             String metaContent = getMetaContent(input);
 
@@ -90,19 +97,18 @@ public class CrawlWebImpl implements CrawlWeb {
     }
 
     private String getUrlContent(String url) throws IOException {
-        try{
             HttpGet get = new HttpGet(url);
             HttpResponse response = httpClient.execute(get);
             
             if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK || response.getEntity() == null) {
-                return url;
+                throw new HttpClientErrorException(org.springframework.http.HttpStatus.PRECONDITION_FAILED);
             }
             Header contentType = response.getEntity().getContentType();
             if (contentType.getValue().contains("text/html")) {
                 InputStream is = null;
                 try {
                     if (response.getEntity().getContentLength() <= 0l) {
-                        return url;
+                        throw new HttpClientErrorException(org.springframework.http.HttpStatus.NOT_ACCEPTABLE);
                     }
                     byte[] responseBytes = new byte[(int) response.getEntity().getContentLength()];
     
@@ -116,10 +122,7 @@ public class CrawlWebImpl implements CrawlWeb {
             } else {
                 return url;
             }
-        }catch(Exception e){
-            LOG.error("Error error while looking for {}", url, e);
-            return url;
-        }
+       
     }
 
     private String getMetaContent(String description) {

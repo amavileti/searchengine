@@ -11,4 +11,6 @@ public interface PageDao extends CrudRepository<Page, Integer>{
     Collection<Page> findByDescriptionLikeOrderByRankDesc(String s);
     
     Collection<Page> findByUrlLikeOrderByRankDesc(String s);
+    
+    Collection<Page> findByDescriptionLikeAndUrlLike(String description, String url);
 }

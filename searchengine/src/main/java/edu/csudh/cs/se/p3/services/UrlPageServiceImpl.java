@@ -3,6 +3,7 @@ package edu.csudh.cs.se.p3.services;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Collection;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -11,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
+import edu.csudh.cs.se.p2.service.IndexSearcher;
 import edu.csudh.cs.se.p3.dao.PageDao;
 import edu.csudh.cs.se.p3.domain.Page;
 
@@ -19,6 +21,10 @@ public class UrlPageServiceImpl implements UrlPageService {
 
     @Inject private PageDao pageDao;
     private static final Logger LOG = LoggerFactory.getLogger(UrlPageServiceImpl.class);
+    
+    @Inject
+    private IndexSearcher indexSearcher;
+    
     
     @Transactional(readOnly=true)
     public Collection<Page> findPages(String url) {
@@ -29,20 +35,18 @@ public class UrlPageServiceImpl implements UrlPageService {
     
     @Transactional
     public Page saveUrlDescription(String url, String description){
-    	Page p = new Page();
-    	String transformedUrl = getUrl(url);
-    	p.setUrl(transformedUrl);
-    	p.setDescription(getTransformedDescription(description));
-    	p.setPageName(transformedUrl);
-    	
-    	LOG.info("Saving page {}", p);
-    	
-    	return pageDao.save(p);
+        Map<String, String> toPersist = indexSearcher.rotate(url, description);
+        Page p = null;
+        for(Map.Entry<String, String> urlDescription : toPersist.entrySet()){
+            p = persist(urlDescription.getValue(), urlDescription.getKey());
+        }
+        return p;
     }
+   
 
     @Transactional(readOnly=true)
     public Page findPageByDescription(String s){
-        Collection<Page> pageCollection = pageDao.findByDescriptionLikeOrderByRankDesc("%"+s.toLowerCase()+"%");
+        Collection<Page> pageCollection = pageDao.findByDescriptionLikeOrderByRankDesc(getLikeString(s));
         if(pageCollection.size()>0){
             return pageCollection.iterator().next();
         }else{
@@ -52,7 +56,7 @@ public class UrlPageServiceImpl implements UrlPageService {
     
     @Transactional(readOnly=true)
     public Page findPageByUrl(String s){
-        Collection<Page> pageCollection = pageDao.findByUrlLikeOrderByRankDesc("%"+s.toLowerCase()+"%");
+        Collection<Page> pageCollection = pageDao.findByUrlLikeOrderByRankDesc(getLikeString(s));
         if(pageCollection.size()>0){
             return pageCollection.iterator().next();
         }else{
@@ -90,5 +94,30 @@ public class UrlPageServiceImpl implements UrlPageService {
             return s.substring(0, 256);
         }
         return s;
+    }
+    
+    private String getLikeString(String s){
+        return new StringBuilder()
+            .append("%")
+            .append(s.toLowerCase())
+            .append("%")
+            .toString();
+    }
+    
+    private Page persist(String url, String description){
+        Collection<Page> pages = pageDao.findByDescriptionLikeAndUrlLike(getLikeString(description), getLikeString(url));
+        if(pages.size()>0){
+            return pages.iterator().next();
+        }
+        Page p = new Page();
+        String transformedUrl = getUrl(url);
+        p.setUrl(transformedUrl);
+        p.setDescription(getTransformedDescription(description));
+        p.setPageName(transformedUrl);
+        
+        LOG.info("Saving page {}", p);
+        
+        return pageDao.save(p);
+
     }
 }
