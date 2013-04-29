@@ -24,7 +24,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
 
   <aop:aspectj-autoproxy/>
-  <repository:repositories base-package="edu.csudh.cs.se.p3.dao" />
+  <repository:repositories base-package="edu.csudh.cs.se.p3" />
   <context:annotation-config />
   <context:component-scan base-package="edu.csudh.cs.se.p3">
     <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
@@ -58,8 +58,8 @@
   <property name="jpaPropertyMap">
    <map>
        <entry key="hibernate.dialect" 
-        value="org.hibernate.dialect.Oracle9iDialect"/>
-       <entry key="hibernate.show_sql" value="false" />
+        value="org.hibernate.dialect.MySQLDialect"/>
+       <entry key="hibernate.show_sql" value="true" />
        <entry key="hibernate.max_fetch_depth" value="3" />
        <entry key="hibernate.cache.use_query_cache" value="${hibernate.useQueryCache}" />
        <entry key="hibernate.cache.use_second_level_cache" 
@@ -76,5 +76,18 @@
   <property name="dataSource" ref="arunaDataSource" />
  </bean>
 
- <tx:annotation-driven transaction-manager="transactionManager"/>                           
+ <tx:annotation-driven transaction-manager="transactionManager"/>
+ 
+  <task:scheduler id="taskScheduler" pool-size="5"/>
+  
+  <task:scheduled-tasks>
+  	<task:scheduled ref="crawlWebImpl" method="crawl" cron="0 0 * * * ?"/>
+  </task:scheduled-tasks>  
+  
+  <bean id="htmlCleaner" class="org.htmlcleaner.HtmlCleaner" />        
+  
+  <bean id="poolingHttpConnectionManager" class="org.apache.http.impl.conn.PoolingClientConnectionManager" p:maxTotal="1000"/>
+  
+    <bean id="httpClient" class="org.apache.http.impl.client.DefaultHttpClient" 
+   c:conman-ref="poolingHttpConnectionManager"/>                 
 </beans>

@@ -28,6 +28,7 @@
   </mvc:interceptors>
   
   <mvc:view-controller path="/ping" view-name="ping" />
+  <mvc:view-controller path="/admin" view-name="admin" />
 
   <mvc:resources mapping="/css/**" location="classpath:/css/"/>
   <mvc:resources mapping="/js/**" location="classpath:/js/"/> 

@@ -21,6 +21,8 @@
 		<junit.version>4.10</junit.version>
 		<inject.version>1</inject.version>
 		<jstl.version>1.2</jstl.version>
+		<jackson.version>1.9.10</jackson.version>
+		 <aspectj.version>1.6.12</aspectj.version>
 	</properties>
 	<build>
 		<finalName>searchengine</finalName>
@@ -135,7 +137,48 @@
 			<version>${jstl.version}</version>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-asl</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>edu.csudh.cs.se.p2</groupId>
+			<artifactId>microminer</artifactId>
+			<version>0.1-SNAPSHOT</version>
+		</dependency>
+                <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjrt</artifactId>
+                        <version>${aspectj.version}</version>
+                </dependency>
+                <dependency>
+                        <groupId>org.aspectj</groupId>
+                        <artifactId>aspectjweaver</artifactId>
+                        <version>${aspectj.version}</version>
+                </dependency>
+<dependency>
+	<groupId>net.sourceforge.htmlcleaner</groupId>
+	<artifactId>htmlcleaner</artifactId>
+	<version>2.2</version>
+</dependency>
 
+<dependency>
+	<groupId>org.apache.httpcomponents</groupId>
+	<artifactId>httpclient</artifactId>
+	<version>4.2.4</version>
+</dependency>
+<dependency>
+	<groupId>javax.annotation</groupId>
+	<artifactId>jsr250-api</artifactId>
+	<version>1.0</version>
+</dependency>
+            		
 	</dependencies>
 	<organization>
 		<name>California State University Dominguez Hills</name>

@@ -1,0 +1,7 @@
+grant all on aruna.* to 'aruna'@'%'
+
+create user 'aruna'@'%' identified by '1qaz2wsx';
+
+delete from aruna.page;
+
+show aruna.page;

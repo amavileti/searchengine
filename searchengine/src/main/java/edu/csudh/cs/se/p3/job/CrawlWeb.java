@@ -1,6 +1,10 @@
 package edu.csudh.cs.se.p3.job;
 
+import java.io.IOException;
+
 public interface CrawlWeb {
 
-	void doCrawl();
+	void crawl();
+	
+	void doCrawl(String s) throws IOException;
 }
