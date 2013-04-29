@@ -40,15 +40,21 @@
  }
  );
  </script>
- </head>
- <body>
+  </head>
+ <body bgcolor="#FFF8C6">
+ <IMG SRC="Images/heading.png"/>
  <div>
- 	<p>Load Page:</p>
- 	<input type="text" id="url" />
- 	<input type="text" id="description" />
- 	<input type="hidden" id="pageId" />
- 	<button id="loadPage">loadPage</button>
- 	<button id="savePage">savePage</button>
+ 	<p align="center" >Add Page</p>
+ 	<table align="center">
+ 	<tbody>
+ 	<tr><td>URL:</td><td><input type="text" name="URL" size="100" id="url" /></td></tr>
+ 	<tr><td>Description:</td><td><input type="text" name="Description"  size="100" id="description" /></td></tr>
+ 	<tr><td><input type="hidden" id="pageId" /></td></tr>
+ 	<tr><td colspan=2><br/></td></tr>
+ 	<tr><td><button id="loadPage">loadPage</button></td>
+<td><button id="savePage">savePage</button></td></tr></table>
+ 	</tbody>
+ 	</table>
  </div>
  </body>
  </html>

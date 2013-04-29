@@ -32,7 +32,7 @@
  </script>
 </head>
 	<body>
-		<input type="text" id="searchText" name="searchText" value="csudh" />
+		<input type="text" maxlength="70" size="80" id="searchText" name="searchText" value="Enter keyword" />
 		<button id="sbutton" name="sbutton" value="Search"/>Search</button>
 		<p id="results" />
 	</body>
