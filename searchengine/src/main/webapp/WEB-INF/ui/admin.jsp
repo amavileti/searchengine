@@ -40,15 +40,33 @@
  }
  );
  </script>
+ <script> 
+ function validate()
+ {
+	 if(document.f1.URL.value=="")
+	 {
+		 alert("Please Enter the URL!!!");
+		 document.f1.URL.focus();
+	 	return false;
+	 }
+	 else if(document.f1.Description.value=="")
+	{
+		 alert("Please Enter the Description!!!");
+		 document.f1.Description.focus();
+	 	return false;
+	}
+	 return true;
+	}</script>
   </head>
  <body bgcolor="#FFF8C6">
- <IMG SRC="Images/heading.png"/>
+ <form name=f1 onSubmit="return validate()">
+ <IMG SRC="./Images/heading.png"/>
  <div>
- 	<p align="center" >Add Page</p>
+ 	<p align="center" ><b>Admin Page</b></p>
  	<table align="center">
  	<tbody>
  	<tr><td>URL:</td><td><input type="text" name="URL" size="100" id="url" /></td></tr>
- 	<tr><td>Description:</td><td><input type="text" name="Description"  size="100" id="description" /></td></tr>
+ 	<br><br><tr><td>Description:</td><td><input type="text" name="Description"  size="100" id="description" /></td></tr>
  	<tr><td><input type="hidden" id="pageId" /></td></tr>
  	<tr><td colspan=2><br/></td></tr>
  	<tr><td><button id="loadPage">loadPage</button></td>
