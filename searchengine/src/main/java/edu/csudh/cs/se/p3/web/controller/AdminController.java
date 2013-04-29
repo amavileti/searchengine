@@ -12,6 +12,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import edu.csudh.cs.se.p3.domain.Page;
 import edu.csudh.cs.se.p3.services.UrlPageService;
 
+/**
+ * Admin controller to alter page url descriptions. 
+ * Need to support altering ranking (anti-trust?).
+ * 
+ * @author amavileti
+ *
+ */
 @Controller
 public class AdminController {
 

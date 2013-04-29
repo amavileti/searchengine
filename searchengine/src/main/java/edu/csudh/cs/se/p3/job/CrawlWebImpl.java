@@ -27,9 +27,16 @@ import com.google.common.collect.Queues;
 import com.google.common.collect.Sets;
 import com.google.common.io.ByteStreams;
 
-import edu.csudh.cs.se.p2.service.IndexSearcher;
 import edu.csudh.cs.se.p3.services.UrlPageService;
 
+/***
+ * Crawler implemenation that crawl HTTP content, picking up
+ * HTTP meta description header and indexes them
+ * This system uses BFS (breadth first search) to scan to all pages and 
+ * stores that content to database
+ * @author amavileti
+ *
+ */
 @Named
 public class CrawlWebImpl implements CrawlWeb {
 
@@ -49,10 +56,16 @@ public class CrawlWebImpl implements CrawlWeb {
     
     @PostConstruct
     public void setDefaultParams(){
+        //Aggressive settings for home use, but had to use to it to not get stuck for a response
         httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 2*1000);
         httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 2*1000);
     }
 
+    /**
+     * Primary implementation for crawling. Accepts a url as a starting point, and
+     * recursively scans child pages referenced by this content. 
+     * Utilizes a Queue as a container to store child urls;
+     */
     public void doCrawl(String url) throws IOException {
         Queue<String> content = Queues.newArrayDeque();
         content.offer(url);
@@ -96,6 +109,15 @@ public class CrawlWebImpl implements CrawlWeb {
         }
     }
 
+    /**
+     * Given a URL, establishes connect to target Host, with specified constraints:
+     * 1. Timeout of 2 secs
+     * 2. Socket timeout of 2 secs
+     * Response content type has to be text/html - otherwise system doesn't index them
+     * @param url
+     * @return
+     * @throws IOException
+     */
     private String getUrlContent(String url) throws IOException {
             HttpGet get = new HttpGet(url);
             HttpResponse response = httpClient.execute(get);
@@ -120,11 +142,16 @@ public class CrawlWebImpl implements CrawlWeb {
                         is.close();
                 }
             } else {
-                return url;
+                throw new HttpClientErrorException(org.springframework.http.HttpStatus.PRECONDITION_FAILED);
             }
        
     }
 
+    /**
+     * Accepts an entire response pages, parses, and picks Meta description
+     * @param description
+     * @return
+     */
     private String getMetaContent(String description) {
         TagNode tagNode = htmlCleaner.clean(description);
         TagNode[] metaNodes = tagNode.getElementsByAttValue("name", "description", true, false);

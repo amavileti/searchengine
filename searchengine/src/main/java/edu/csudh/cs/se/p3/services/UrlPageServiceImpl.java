@@ -16,6 +16,11 @@ import edu.csudh.cs.se.p2.service.IndexSearcher;
 import edu.csudh.cs.se.p3.dao.PageDao;
 import edu.csudh.cs.se.p3.domain.Page;
 
+/**
+ * Service layer to transactionally persist, search url and descriptions
+ * @author amavileti
+ *
+ */
 @Named
 public class UrlPageServiceImpl implements UrlPageService {
 
