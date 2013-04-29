@@ -1,7 +1,20 @@
+create database aruna;
+use database aruna;
+drop table page;
+
 create table page (id integer primary key auto_increment, 
-name varchar(32),
+name varchar(256),
 url varchar(256),
-description varchar(1024)
+description varchar(1024),
+rank integer defaul 0
 )
 
-drop table page;
+
+
+grant all on aruna.* to 'aruna'@'%'
+
+create user 'aruna'@'%' identified by '1qaz2wsx';
+
+delete from aruna.page;
+
+show aruna.page;
