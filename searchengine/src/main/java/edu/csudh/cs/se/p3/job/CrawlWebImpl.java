@@ -69,7 +69,7 @@ public class CrawlWebImpl implements CrawlWeb {
     public void doCrawl(String url) throws IOException {
         Queue<String> content = Queues.newArrayDeque();
         content.offer(url);
-        while (!content.isEmpty() || scannedPages.size() < 1000) {
+        while (!content.isEmpty() && scannedPages.size() < 1000) {
             String v = content.remove();
             LOG.info("Scanning {}", v);
             String input = EMPTY;
