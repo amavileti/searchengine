@@ -21,6 +21,7 @@ import org.htmlcleaner.HtmlCleaner;
 import org.htmlcleaner.TagNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.client.HttpClientErrorException;
 
 import com.google.common.collect.Queues;
@@ -66,6 +67,7 @@ public class CrawlWebImpl implements CrawlWeb {
      * recursively scans child pages referenced by this content. 
      * Utilizes a Queue as a container to store child urls;
      */
+    @Async
     public void doCrawl(String url) throws IOException {
         Queue<String> content = Queues.newArrayDeque();
         content.offer(url);
