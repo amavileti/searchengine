@@ -75,14 +75,14 @@ public class CrawlWebImpl implements CrawlWeb {
             String input = EMPTY;
             try{
                 input = getUrlContent(v);
+                String metaContent = getMetaContent(input);
+
+                pageService.saveUrlDescription(v, metaContent);
             }catch(Throwable e){
                 LOG.error("Unable to index {}", url);
                 continue;
             }
 
-            String metaContent = getMetaContent(input);
-
-            pageService.saveUrlDescription(v, metaContent);
 
             LOG.debug("Got input {} ", input);
             Matcher matcher = urlPattern.matcher(input);
@@ -168,13 +168,7 @@ public class CrawlWebImpl implements CrawlWeb {
         }
         // Case where there's no meta content
         if (descriptionBuilder.length() == 0) {
-            TagNode[] bodyNodes = tagNode.getElementsByName("body", true);
-            for (TagNode bodyNode : bodyNodes) {
-                StringBuffer bodyText = bodyNode.getText();
-                if (bodyText != null && !bodyText.equals(EMPTY)) {
-                    descriptionBuilder.append(bodyText);
-                }
-            }
+            throw new RuntimeException("No description found");
 
         }
 
